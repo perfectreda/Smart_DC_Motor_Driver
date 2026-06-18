@@ -8,7 +8,7 @@
   <img src="https://img.shields.io/badge/ESP32-WROOM--32-blue">
   <img src="https://img.shields.io/badge/TB6612FNG-Motor%20Driver-green">
   <img src="https://img.shields.io/badge/INA219-Current%20Sensor-orange">
-  <img src="https://img.shields.io/badge/PCB-4%20Layers-red">
+  <img src="https://img.shields.io/badge/PCB-2%20Layers-red">
   <img src="https://img.shields.io/badge/KiCad-10.0.1-success">
 </p>
 
