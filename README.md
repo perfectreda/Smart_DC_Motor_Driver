@@ -1,201 +1,256 @@
 # Smart DC Motor Driver Board V1
 
-A compact 4-layer PCB for smart DC motor control, built around the **ESP32-WROOM-32**, **TB6612FNG** dual motor driver, and **INA219** current sensor. Designed for embedded/IoT applications requiring wireless motor control with real-time current monitoring.
+<p align="center">
+  <img src="docs/images/3d_render_front.png" width="700">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/ESP32-WROOM--32-blue">
+  <img src="https://img.shields.io/badge/TB6612FNG-Motor%20Driver-green">
+  <img src="https://img.shields.io/badge/INA219-Current%20Sensor-orange">
+  <img src="https://img.shields.io/badge/PCB-4%20Layers-red">
+  <img src="https://img.shields.io/badge/KiCad-10.0.1-success">
+</p>
+
+<p align="center">
+  Wireless Motor Control • Current Monitoring • Protection Circuitry • Embedded Systems
+</p>
 
 ---
 
-## Features
+## 📸 Project Gallery
 
-- **ESP32-WROOM-32** — WiFi + Bluetooth, full GPIO control
-- **TB6612FNG** — dual H-bridge DC motor driver (continuous 1.2A, peak 3.2A per channel)
-- **INA219** — I²C current/voltage sensor for real-time motor current monitoring
-- **LM2596 Buck Module** — onboard 12V → 3.3V regulation for logic supply
-- **IRF4905 P-MOSFET** — controlled power switch on the 12V rail
-- **PTVS12VZ1USK TVS Diode** — transient voltage spike protection
-- **MF-R500 Resettable Fuse** — overcurrent protection on the input
-- **NTC Thermistor** — temperature monitoring
-- **3 Status LEDs** — POWER / MOTOR / FAULT indicators
-- **UART Programming Header (J2)** — TX, RX, IO0, EN pins for flashing
-- **Screw Terminal Connectors** — motor and power connections
+<table>
+<tr>
+<td align="center">
+<img src="docs/images/pcb_top.png" width="400"><br>
+<b>PCB Top View</b>
+</td>
+<td align="center">
+<img src="docs/images/pcb_bottom.png" width="400"><br>
+<b>PCB Bottom View</b>
+</td>
+</tr>
+
+<tr>
+<td align="center">
+<img src="docs/images/3d_render_front.png" width="400"><br>
+<b>3D Front Render</b>
+</td>
+<td align="center">
+<img src="docs/images/3d_render_back.png" width="400"><br>
+<b>3D Back Render</b>
+</td>
+</tr>
+</table>
 
 ---
 
-## Specifications
+# 📖 Overview
+
+Smart DC Motor Driver Board V1 is a custom-designed 4-layer PCB developed around the ESP32 ecosystem for intelligent DC motor control applications.
+
+The board integrates:
+
+- ESP32-WROOM-32 microcontroller
+- TB6612FNG H-Bridge motor driver
+- INA219 current monitor
+- LM2596 power regulation
+- Input protection circuitry
+- Temperature monitoring
+
+---
+
+# 🏗 System Architecture
+
+<p align="center">
+<img src="docs/images/block_diagram.png" width="800">
+</p>
+
+---
+
+# ✨ Features
+
+<table>
+<tr>
+<td width="50%">
+
+### Control
+- ESP32-WROOM-32
+- WiFi
+- Bluetooth
+- UART Programming
+
+### Motor Driver
+- TB6612FNG
+- PWM Speed Control
+- Direction Control
+- Standby Mode
+
+</td>
+
+<td width="50%">
+
+### Monitoring
+- INA219 Current Sensor
+- Voltage Measurement
+- Power Monitoring
+- NTC Temperature Sensor
+
+### Protection
+- TVS Diode
+- Resettable Fuse
+- MOSFET Power Switch
+- Ground Plane Design
+
+</td>
+</tr>
+</table>
+
+---
+
+# ⚙ Hardware Specifications
 
 | Parameter | Value |
-|---|---|
+|------------|---------|
 | Input Voltage | 12V DC |
-| Logic Voltage | 3.3V (onboard regulated) |
-| Board Size | 96.28 × 72.90 mm |
-| Layer Count | 4 (Front, In1.Cu, In2.Cu, Back) |
-| PCB Thickness | 1.6 mm |
+| Logic Voltage | 3.3V |
+| MCU | ESP32-WROOM-32 |
+| Motor Driver | TB6612FNG |
+| Current Sensor | INA219 |
+| PCB Layers | 4 |
+| PCB Size | 96.28 × 72.90 mm |
+| Thickness | 1.6 mm |
 | Material | FR4 |
-| Min Track Width | 0.2 mm |
-| Min Clearance | 0.15 mm |
 | EDA Tool | KiCad 10.0.1 |
 
 ---
 
-## Bill of Materials
+# 🔌 ESP32 Pin Mapping
 
-| Reference | Qty | Value / Part | Package |
-|---|---|---|---|
-| U1 | 1 | LM2596 Buck Module | Module board |
-| U2 | 1 | ESP32-WROOM-32 | RF Module |
-| U3 | 1 | TB6612FNG | SSOP-24 |
-| U4 | 1 | INA219AxD | SOIC-8 |
-| Q1 | 1 | IRF4905 P-MOSFET | TO-220-3 |
-| D1 | 1 | PTVS12VZ1USK TVS Diode | Nexperia DSN1608 |
-| D2 | 1 | POWER LED | LED 0805 |
-| D3 | 1 | MOTOR LED | LED 0805 |
-| D4 | 1 | FAULT LED | LED 0805 |
-| F1 | 1 | MF-R500 Resettable Fuse | Fuse 1206 |
-| TH1 | 1 | NTC Thermistor | 0805 |
-| SW1 | 1 | Tactile Push Button (EN) | SPST TL3342 |
-| J1, J3 | 2 | Screw Terminal 2-pin | Phoenix MKDS 5.08mm |
-| J2 | 1 | Pin Header 6-pin (UART) | 2.54mm vertical |
-| C1 | 1 | 100µF | — |
-| C4, C6, C10, C11 | 4 | 100µF | CP Elec 8×10mm |
-| C2, C3, C5, C7, C8, C9, C12 | 7 | 100nF | C 0805 |
-| R1, R3, R4, R11 | 4 | 10kΩ | R 0805 |
-| R2 | 1 | 100kΩ | R 0805 |
-| R5, R6, R7 | 3 | 330Ω | R 0805 |
-| R8, R9 | 2 | 4.7kΩ | R 0805 |
-| R10 | 1 | 0.1Ω (shunt) | R 0805 |
+| GPIO | Function |
+|--------|------------|
+| GPIO21 | SDA |
+| GPIO22 | SCL |
+| GPIO25 | PWMA |
+| GPIO27 | AIN1 |
+| GPIO14 | AIN2 |
+| GPIO33 | STBY |
+| GPIO34 | NTC ADC |
+| GPIO15 | Fault LED |
+| TXD0 | UART TX |
+| RXD0 | UART RX |
+| GPIO0 | Boot Mode |
 
 ---
 
-## Pin Mapping (ESP32 → Peripherals)
+# 📂 Repository Structure
 
-| ESP32 GPIO | Signal | Connected To |
-|---|---|---|
-| IO21 | SDA | INA219 I²C |
-| IO22 | SCL | INA219 I²C |
-| IO25 | PWMA | TB6612FNG PWM |
-| IO27 | AIN1 | TB6612FNG direction |
-| IO14 | AIN2 | TB6612FNG direction |
-| IO33 | STBY | TB6612FNG standby |
-| IO23 (via EN) | EN | MOSFET gate (power switch) |
-| IO32 | GPIO32 | LED / indicator |
-| IO15 | GPIO15 | General purpose |
-| IO34 | NTC | Thermistor ADC |
-| TXD0 | TX | UART header (J2) |
-| RXD0 | RX | UART header (J2) |
-| IO0 | IO0 | Boot mode / UART header |
-| EN | EN | Reset / UART header |
-
----
-
-## PCB Layer Stack
-
-```
-[Top Silk]
-[Top Paste]
-[Top Mask]
- L1 — Front Copper        (signal + power)
-      FR4 0.48mm
- L2 — In1.Cu              (internal signal)
-      FR4 0.48mm
- L3 — In2.Cu              (internal signal)
-      FR4 0.48mm
- L4 — Back Copper         (GND plane)
-[Bottom Mask]
-[Bottom Paste]
-[Bottom Silk]
-```
-
----
-
-## Drill Summary
-
-| Type | Size | Count |
-|---|---|---|
-| PTH via | 0.3mm | 47 |
-| PTH component | 0.2mm | 12 |
-| PTH component | 1.0mm | 6 |
-| PTH component | 1.1mm | 3 |
-| PTH component | 1.2mm | 4 |
-| PTH component | 1.3mm | 4 |
-| NPTH mounting hole | 3.2mm | 4 |
-
----
-
-## Repository Structure
-
-```
+```text
+Smart_DC_Motor_Driver/
+│
 ├── Hardware/
 │   ├── BOM/
-│   │   └── Smart Power Management Board.csv
 │   ├── Gerbers/
-│   │   ├── SMART_DC_MOTOR_DRIVER-Front.gbr
-│   │   ├── SMART_DC_MOTOR_DRIVER-Back.gbr
-│   │   ├── SMART_DC_MOTOR_DRIVER-In1_Cu.gbr
-│   │   ├── SMART_DC_MOTOR_DRIVER-In2_Cu.gbr
-│   │   ├── SMART_DC_MOTOR_DRIVER-F_Mask.gbr
-│   │   ├── SMART_DC_MOTOR_DRIVER-B_Mask.gbr
-│   │   ├── SMART_DC_MOTOR_DRIVER-F_Paste.gbr
-│   │   ├── SMART_DC_MOTOR_DRIVER-B_Paste.gbr
-│   │   ├── SMART_DC_MOTOR_DRIVER-F_Silkscreen.gbr
-│   │   ├── SMART_DC_MOTOR_DRIVER-B_Silkscreen.gbr
-│   │   ├── SMART_DC_MOTOR_DRIVER-Edge_Cuts.gbr
-│   │   └── SMART_DC_MOTOR_DRIVER-job.gbrjob
-│   ├── Drill files/
-│   │   ├── SMART_DC_MOTOR_DRIVER-PTH.drl
-│   │   └── SMART_DC_MOTOR_DRIVER-NPTH.drl
-│   └── Report File/
-│       └── SMART_DC_MOTOR_DRIVER-drl.rpt
+│   ├── Drill Files/
+│   └── Reports/
+│
+├── docs/
+│   └── images/
+│       ├── pcb_top.png
+│       ├── pcb_bottom.png
+│       ├── 3d_render_front.png
+│       ├── 3d_render_back.png
+│       ├── schematic.png
+│       └── block_diagram.png
+│
 └── README.md
 ```
 
 ---
 
-## Getting Started
+# 🛠 Manufacturing
 
-### Programming the ESP32
+<details>
+<summary><b>Click to expand manufacturing information</b></summary>
 
-Connect a USB-to-Serial adapter to **J2**:
+### PCB Specifications
 
-| J2 Pin | Signal | Adapter |
-|---|---|---|
-| 1 | 3.3V | 3.3V |
-| 2 | GND | GND |
-| 3 | TX | RX |
-| 4 | RX | TX |
-| 5 | IO0 | Pull LOW to enter flash mode |
-| 6 | EN | Pull LOW then HIGH to reset |
+| Parameter | Value |
+|------------|---------|
+| Layers | 4 |
+| Thickness | 1.6 mm |
+| Copper Weight | 1 oz |
+| Surface Finish | ENIG / HASL |
+| Material | FR4 |
 
-Flash using Arduino IDE or `esptool.py`.
+Upload all files inside:
 
-### Manufacturing
+```text
+Hardware/Gerbers/
+```
 
-Send the contents of `Hardware/Gerbers/` to your PCB manufacturer. The `.gbrjob` file contains the full stackup definition. Specify **4-layer, 1.6mm FR4, HASL or ENIG finish**.
+to your PCB manufacturer.
 
----
-
-## Schematic Signals Reference
-
-| Net Name | Description |
-|---|---|
-| `+12V_FUSED` | Input after fuse F1 |
-| `12V_PROTECTED` | Output after MOSFET Q1 |
-| `3.3V` | Regulated logic supply |
-| `GND` | Common ground |
-| `SDA / SCL` | I²C bus to INA219 |
-| `PWMA` | Motor PWM from ESP32 |
-| `AIN1 / AIN2` | Motor direction control |
-| `STBY` | TB6612 standby control |
-| `NTC` | Thermistor ADC input |
+</details>
 
 ---
 
-## Author
+# 🚀 Programming
 
-**Redha** — [@perfectreda](https://github.com/perfectreda)
+### UART Header
 
-Electrical Engineering student — Specialization: Energy Conversion & Embedded Systems.
+| Pin | Signal |
+|------|---------|
+| 1 | 3.3V |
+| 2 | GND |
+| 3 | TX |
+| 4 | RX |
+| 5 | GPIO0 |
+| 6 | EN |
+
+### Flashing
+
+```bash
+esptool.py write_flash firmware.bin
+```
+
+Compatible with:
+
+- Arduino IDE
+- PlatformIO
+- ESP-IDF
 
 ---
 
-## License
+# 📊 PCB Statistics
 
-Hardware design files are open-source. See [LICENSE](LICENSE) for details.
+| Item | Count |
+|---------|---------|
+| PCB Layers | 4 |
+| Components | 40+ |
+| Vias | 47 |
+| Mounting Holes | 4 |
+| Current Sensor | 1 |
+| Motor Driver Channels | 2 |
+
+---
+
+# 👨‍💻 Author
+
+### Redha
+
+Electrical Engineering Student
+
+**Specialization:** Energy Conversion & Embedded Systems
+
+GitHub:
+
+https://github.com/perfectreda
+
+---
+
+# 📜 License
+
+Released under the MIT License.
+See `LICENSE` for details.
