@@ -1,258 +1,201 @@
-<div align="center">
+# Smart DC Motor Driver Board V1
 
-# ⚡ Smart DC Motor Driver PCB
-
-**A compact, MCU-controlled DC motor driver for 12V systems**
-
-![PCB](https://img.shields.io/badge/PCB-2--Layer-blue?style=for-the-badge&logo=kicad)
-![Voltage](https://img.shields.io/badge/Voltage-12V_DC-orange?style=for-the-badge)
-![Current](https://img.shields.io/badge/Current-Up_to_10A-red?style=for-the-badge)
-![MCU](https://img.shields.io/badge/MCU-ESP32_%2F_STM32-green?style=for-the-badge&logo=espressif)
-![License](https://img.shields.io/badge/License-Educational-lightgrey?style=for-the-badge)
-
-*Built as a learning & portfolio project focused on real-world power electronics, PWM control, and high-current PCB design.*
-
-</div>
+A compact 4-layer PCB for smart DC motor control, built around the **ESP32-WROOM-32**, **TB6612FNG** dual motor driver, and **INA219** current sensor. Designed for embedded/IoT applications requiring wireless motor control with real-time current monitoring.
 
 ---
 
-## 📋 Table of Contents
+## Features
 
-- [Overview](#overview)
-- [Key Features](#key-features)
-- [Electrical Specifications](#electrical-specifications)
-- [System Architecture](#system-architecture)
-- [Core Components](#core-components)
-- [PCB Design Highlights](#pcb-design-highlights)
-- [Safety & Design Considerations](#safety--design-considerations)
-- [Getting Started](#getting-started)
-- [Limitations (v1)](#limitations-v1)
-- [Future Improvements](#future-improvements)
-- [What This Project Demonstrates](#what-this-project-demonstrates)
-- [License](#license)
-
----
-
-## 🔍 Overview
-
-This board moves beyond basic switching and targets **proper motor control behavior** with:
-- Protection and current sensing
-- Noise-aware layout practices
-- PWM-based speed regulation via an external MCU (ESP32 / STM32 compatible)
-
-It is designed as a practical introduction to **H-bridge motor control**, **high-current PCB layout**, and **inductive load protection** — all in a compact 12V form factor.
+- **ESP32-WROOM-32** — WiFi + Bluetooth, full GPIO control
+- **TB6612FNG** — dual H-bridge DC motor driver (continuous 1.2A, peak 3.2A per channel)
+- **INA219** — I²C current/voltage sensor for real-time motor current monitoring
+- **LM2596 Buck Module** — onboard 12V → 3.3V regulation for logic supply
+- **IRF4905 P-MOSFET** — controlled power switch on the 12V rail
+- **PTVS12VZ1USK TVS Diode** — transient voltage spike protection
+- **MF-R500 Resettable Fuse** — overcurrent protection on the input
+- **NTC Thermistor** — temperature monitoring
+- **3 Status LEDs** — POWER / MOTOR / FAULT indicators
+- **UART Programming Header (J2)** — TX, RX, IO0, EN pins for flashing
+- **Screw Terminal Connectors** — motor and power connections
 
 ---
 
-## ✨ Key Features
-
-| Feature | Details |
-|---|---|
-| 🔋 Power Supply | 12V DC input |
-| 🎛️ Speed Control | PWM via MCU (1–25 kHz range) |
-| 🔄 Direction Control | H-bridge topology |
-| 📊 Current Sensing | Load monitoring via shunt or Hall sensor |
-| 🛡️ Reverse Polarity Protection | MOSFET-based input protection |
-| ⚡ Flyback Protection | Inductive load spike suppression |
-| 💡 Status LEDs | Power + fault indication |
-| 🔌 UART Debug Interface | Serial telemetry output |
-| 🔩 Screw Terminal Output | High-current rated motor connectors |
-
----
-
-## 📐 Electrical Specifications
+## Specifications
 
 | Parameter | Value |
 |---|---|
-| Input Voltage | **12V DC** |
-| Logic Voltage | **3.3V / 5V** (MCU compatible) |
-| Max Motor Current | **~5–10A** (depends on MOSFET + copper width) |
-| Switching Frequency | **1–25 kHz** (MCU PWM configured) |
-| MOSFET Vds Margin | ≥ 30V recommended |
+| Input Voltage | 12V DC |
+| Logic Voltage | 3.3V (onboard regulated) |
+| Board Size | 96.28 × 72.90 mm |
+| Layer Count | 4 (Front, In1.Cu, In2.Cu, Back) |
+| PCB Thickness | 1.6 mm |
+| Material | FR4 |
+| Min Track Width | 0.2 mm |
+| Min Clearance | 0.15 mm |
+| EDA Tool | KiCad 10.0.1 |
 
 ---
 
-## 🏗️ System Architecture
+## Bill of Materials
 
-The design is split into clean, isolated functional blocks:
+| Reference | Qty | Value / Part | Package |
+|---|---|---|---|
+| U1 | 1 | LM2596 Buck Module | Module board |
+| U2 | 1 | ESP32-WROOM-32 | RF Module |
+| U3 | 1 | TB6612FNG | SSOP-24 |
+| U4 | 1 | INA219AxD | SOIC-8 |
+| Q1 | 1 | IRF4905 P-MOSFET | TO-220-3 |
+| D1 | 1 | PTVS12VZ1USK TVS Diode | Nexperia DSN1608 |
+| D2 | 1 | POWER LED | LED 0805 |
+| D3 | 1 | MOTOR LED | LED 0805 |
+| D4 | 1 | FAULT LED | LED 0805 |
+| F1 | 1 | MF-R500 Resettable Fuse | Fuse 1206 |
+| TH1 | 1 | NTC Thermistor | 0805 |
+| SW1 | 1 | Tactile Push Button (EN) | SPST TL3342 |
+| J1, J3 | 2 | Screw Terminal 2-pin | Phoenix MKDS 5.08mm |
+| J2 | 1 | Pin Header 6-pin (UART) | 2.54mm vertical |
+| C1 | 1 | 100µF | — |
+| C4, C6, C10, C11 | 4 | 100µF | CP Elec 8×10mm |
+| C2, C3, C5, C7, C8, C9, C12 | 7 | 100nF | C 0805 |
+| R1, R3, R4, R11 | 4 | 10kΩ | R 0805 |
+| R2 | 1 | 100kΩ | R 0805 |
+| R5, R6, R7 | 3 | 330Ω | R 0805 |
+| R8, R9 | 2 | 4.7kΩ | R 0805 |
+| R10 | 1 | 0.1Ω (shunt) | R 0805 |
+
+---
+
+## Pin Mapping (ESP32 → Peripherals)
+
+| ESP32 GPIO | Signal | Connected To |
+|---|---|---|
+| IO21 | SDA | INA219 I²C |
+| IO22 | SCL | INA219 I²C |
+| IO25 | PWMA | TB6612FNG PWM |
+| IO27 | AIN1 | TB6612FNG direction |
+| IO14 | AIN2 | TB6612FNG direction |
+| IO33 | STBY | TB6612FNG standby |
+| IO23 (via EN) | EN | MOSFET gate (power switch) |
+| IO32 | GPIO32 | LED / indicator |
+| IO15 | GPIO15 | General purpose |
+| IO34 | NTC | Thermistor ADC |
+| TXD0 | TX | UART header (J2) |
+| RXD0 | RX | UART header (J2) |
+| IO0 | IO0 | Boot mode / UART header |
+| EN | EN | Reset / UART header |
+
+---
+
+## PCB Layer Stack
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                     12V DC INPUT                        │
-│            ┌──────────────────────┐                     │
-│            │  Power Input Stage   │                     │
-│            │  - Reverse polarity  │                     │
-│            │  - Input filtering   │                     │
-│            └──────────┬───────────┘                     │
-│                       │                                 │
-│            ┌──────────▼───────────┐                     │
-│            │   Gate Drive Stage   │◄──── MCU PWM/DIR    │
-│            │  - H-bridge MOSFETs  │                     │
-│            │  - Gate resistors    │                     │
-│            │  - Flyback paths     │                     │
-│            └──────────┬───────────┘                     │
-│                       │                                 │
-│            ┌──────────▼───────────┐                     │
-│            │  Motor Output Stage  │──── MOTOR           │
-│            │  - Screw terminals   │                     │
-│            │  - Wide copper pour  │                     │
-│            └──────────┬───────────┘                     │
-│                       │                                 │
-│            ┌──────────▼───────────┐                     │
-│            │   Sensing Stage      │──── MCU ADC         │
-│            │  - Current sensing   │                     │
-│            │  - Fault detection   │                     │
-│            └──────────────────────┘                     │
-└─────────────────────────────────────────────────────────┘
+[Top Silk]
+[Top Paste]
+[Top Mask]
+ L1 — Front Copper        (signal + power)
+      FR4 0.48mm
+ L2 — In1.Cu              (internal signal)
+      FR4 0.48mm
+ L3 — In2.Cu              (internal signal)
+      FR4 0.48mm
+ L4 — Back Copper         (GND plane)
+[Bottom Mask]
+[Bottom Paste]
+[Bottom Silk]
 ```
 
 ---
 
-## 🔧 Core Components
+## Drill Summary
 
-| Component | Options |
+| Type | Size | Count |
+|---|---|---|
+| PTH via | 0.3mm | 47 |
+| PTH component | 0.2mm | 12 |
+| PTH component | 1.0mm | 6 |
+| PTH component | 1.1mm | 3 |
+| PTH component | 1.2mm | 4 |
+| PTH component | 1.3mm | 4 |
+| NPTH mounting hole | 3.2mm | 4 |
+
+---
+
+## Repository Structure
+
+```
+├── Hardware/
+│   ├── BOM/
+│   │   └── Smart Power Management Board.csv
+│   ├── Gerbers/
+│   │   ├── SMART_DC_MOTOR_DRIVER-Front.gbr
+│   │   ├── SMART_DC_MOTOR_DRIVER-Back.gbr
+│   │   ├── SMART_DC_MOTOR_DRIVER-In1_Cu.gbr
+│   │   ├── SMART_DC_MOTOR_DRIVER-In2_Cu.gbr
+│   │   ├── SMART_DC_MOTOR_DRIVER-F_Mask.gbr
+│   │   ├── SMART_DC_MOTOR_DRIVER-B_Mask.gbr
+│   │   ├── SMART_DC_MOTOR_DRIVER-F_Paste.gbr
+│   │   ├── SMART_DC_MOTOR_DRIVER-B_Paste.gbr
+│   │   ├── SMART_DC_MOTOR_DRIVER-F_Silkscreen.gbr
+│   │   ├── SMART_DC_MOTOR_DRIVER-B_Silkscreen.gbr
+│   │   ├── SMART_DC_MOTOR_DRIVER-Edge_Cuts.gbr
+│   │   └── SMART_DC_MOTOR_DRIVER-job.gbrjob
+│   ├── Drill files/
+│   │   ├── SMART_DC_MOTOR_DRIVER-PTH.drl
+│   │   └── SMART_DC_MOTOR_DRIVER-NPTH.drl
+│   └── Report File/
+│       └── SMART_DC_MOTOR_DRIVER-drl.rpt
+└── README.md
+```
+
+---
+
+## Getting Started
+
+### Programming the ESP32
+
+Connect a USB-to-Serial adapter to **J2**:
+
+| J2 Pin | Signal | Adapter |
+|---|---|---|
+| 1 | 3.3V | 3.3V |
+| 2 | GND | GND |
+| 3 | TX | RX |
+| 4 | RX | TX |
+| 5 | IO0 | Pull LOW to enter flash mode |
+| 6 | EN | Pull LOW then HIGH to reset |
+
+Flash using Arduino IDE or `esptool.py`.
+
+### Manufacturing
+
+Send the contents of `Hardware/Gerbers/` to your PCB manufacturer. The `.gbrjob` file contains the full stackup definition. Specify **4-layer, 1.6mm FR4, HASL or ENIG finish**.
+
+---
+
+## Schematic Signals Reference
+
+| Net Name | Description |
 |---|---|
-| **N-MOSFETs** | IRLZ44N, AO series (logic-level preferred) |
-| **Gate Resistors** | 10–33 Ω |
-| **Pull-down Resistors** | 10 kΩ |
-| **Current Sensor** | INA219 or shunt resistor setup |
-| **MCU** | ESP32 or STM32 |
-| **Protection Diodes** | Fast recovery / Schottky |
-| **Connectors** | High-current rated screw terminal blocks |
+| `+12V_FUSED` | Input after fuse F1 |
+| `12V_PROTECTED` | Output after MOSFET Q1 |
+| `3.3V` | Regulated logic supply |
+| `GND` | Common ground |
+| `SDA / SCL` | I²C bus to INA219 |
+| `PWMA` | Motor PWM from ESP32 |
+| `AIN1 / AIN2` | Motor direction control |
+| `STBY` | TB6612 standby control |
+| `NTC` | Thermistor ADC input |
 
 ---
 
-## 🖥️ PCB Design Highlights
+## Author
 
-This project is heavily focused on **real PCB engineering constraints**:
+**Redha** — [@perfectreda](https://github.com/perfectreda)
 
-- 🔴 **High-current trace routing** — wide pours, minimal resistance paths
-- ⚡ **Separate power and logic grounds** — star topology grounding
-- 📉 **Minimized switching loop area** — reduces EMI and ringing
-- 🌡️ **MOSFET thermal spreading** — copper area + thermal vias
-- 🔋 **Decoupling capacitors** — placed strategically near MOSFETs and MCU supply pins
-- 📡 **EMI discipline** — layout minimizes high-dV/dt loop areas
-- ⚡ **Short gate drive paths** — reduces switching noise and parasitic inductance
+Electrical Engineering student — Specialization: Energy Conversion & Embedded Systems.
 
 ---
 
-## ⚠️ Safety & Design Considerations
+## License
 
-> **Important:** This board is designed for 12V DC motor loads which are inductive in nature. Always account for the following:
-
-- **Voltage spikes** — motor loads generate back-EMF; flyback protection is mandatory
-- **MOSFET Vds margin** — use devices rated ≥ 30V for a 12V system
-- **Thermal management** — MOSFETs dissipate power under load; copper spreading is critical
-- **Current sensing** — required for overload detection and fault protection
-- **Fuse** — always include a fuse or PTC on the 12V input rail
-
----
-
-## 🚀 Getting Started
-
-### 1. Power Up
-
-Connect a **12V DC power supply** to the input screw terminal. Verify the power LED lights up.
-
-### 2. Connect MCU
-
-Wire your MCU (ESP32 / STM32) to the PWM and direction control pins:
-
-```
-MCU Pin     →   Board Header
----------       ------------
-GPIO (PWM)  →   PWM_IN
-GPIO (DIR)  →   DIR_IN
-GND         →   GND
-3.3V / 5V   →   VCC_LOGIC
-```
-
-### 3. Attach Motor
-
-Connect your DC motor to the output screw terminals.
-
-### 4. Configure Firmware
-
-Set your PWM frequency in firmware (recommended: **10–20 kHz** for most DC motors):
-
-```c
-// Example: ESP32 PWM setup (Arduino framework)
-const int PWM_PIN    = 18;
-const int DIR_PIN    = 19;
-const int PWM_FREQ   = 20000;  // 20 kHz
-const int PWM_CHANNEL = 0;
-const int PWM_RES    = 8;      // 8-bit (0–255 duty cycle)
-
-void setup() {
-    ledcSetup(PWM_CHANNEL, PWM_FREQ, PWM_RES);
-    ledcAttachPin(PWM_PIN, PWM_CHANNEL);
-    pinMode(DIR_PIN, OUTPUT);
-}
-
-void loop() {
-    digitalWrite(DIR_PIN, HIGH);       // Set direction
-    ledcWrite(PWM_CHANNEL, 180);       // ~70% duty cycle
-    delay(2000);
-
-    ledcWrite(PWM_CHANNEL, 0);         // Stop
-    delay(500);
-}
-```
-
-### 5. Monitor Current (Optional)
-
-Read the current sensing output via ADC or I²C (INA219) for load monitoring and fault detection.
-
----
-
-## 🚧 Limitations (v1)
-
-| Limitation | Notes |
-|---|---|
-| No isolated gate driver | Direct MCU-driven MOSFETs (low-side switching only) |
-| Open-loop PWM only | No closed-loop speed feedback |
-| Basic protection | No hardware overcurrent shutdown |
-| No EMI certification | Not suitable for regulated/commercial products as-is |
-
----
-
-## 🔮 Future Improvements
-
-- [ ] **Dedicated gate driver IC** (e.g. IR2104, DRV8833, DRV8302)
-- [ ] **Closed-loop speed control** (PID with encoder feedback)
-- [ ] **Hardware overcurrent shutdown** (comparator + latch)
-- [ ] **Better EMI filtering** (common-mode choke, TVS clamps)
-- [ ] **4-layer PCB** (dedicated power plane + ground plane)
-- [ ] **Industrial communication** (CAN / RS485)
-- [ ] **Thermal protection** (NTC thermistor + MCU-controlled shutdown)
-
----
-
-## 📚 What This Project Demonstrates
-
-```
-✅ DC motor control fundamentals
-✅ H-bridge topology and operation
-✅ PWM-based speed regulation
-✅ Inductive load protection strategies
-✅ High-current PCB layout techniques
-✅ Practical embedded hardware integration
-✅ Real-world power electronics design constraints
-```
-
----
-
-## 📜 License
-
-**Open for educational and portfolio use.**
-Commercial use requires full redesign validation and is not covered under this release.
-
----
-
-<div align="center">
-
-*If you found this useful, feel free to ⭐ star the repo!*
-
-**Next milestone → Industrial driver version: gate driver IC + current control + thermal protection**
-
-</div>
+Hardware design files are open-source. See [LICENSE](LICENSE) for details.
